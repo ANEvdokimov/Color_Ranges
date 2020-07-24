@@ -26,10 +26,23 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.btn_open.clicked.connect(self.btn_open_handler)
 
     def btn_open_handler(self):
-        self.open_image("c:/Users/evdok/Desktop/too_many_tomatoes_small.jpg")
+        file_name = QtWidgets.QFileDialog.getOpenFileName(self, "Открыть")[0]
+        if file_name:
+            try:
+                self.open_image(file_name)
+                self.lbl_fileName.setText(file_name)
+            except IOError as e:
+                message_box = QtWidgets.QMessageBox()
+                message_box.setText(str(e))
+                message_box.setWindowTitle("IOError")
+                message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                message_box.exec()
 
     def open_image(self, file_name):
-        self.source_image_bgr = cv2.imread(file_name)
+        opened_image = cv2.imread(file_name)
+        if opened_image is None:
+            raise IOError("Ошибка при открытии изображения.")
+        self.source_image_bgr = opened_image
         self.redraw_image()
 
     def sld_min_h_handler(self):

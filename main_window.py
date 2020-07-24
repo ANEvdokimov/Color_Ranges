@@ -103,6 +103,10 @@ class Ui_MainWindow(object):
         self.btn_open = QtWidgets.QPushButton(self.centralwidget)
         self.btn_open.setGeometry(QtCore.QRect(590, 10, 75, 23))
         self.btn_open.setObjectName("btn_open")
+        self.lbl_fileName = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_fileName.setGeometry(QtCore.QRect(26, 10, 551, 20))
+        self.lbl_fileName.setText("")
+        self.lbl_fileName.setObjectName("lbl_fileName")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -113,7 +117,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Настройщик цветовых диапазонов для поиска на изображении"))
         self.label.setText(_translate("MainWindow", "min H"))
         self.label_2.setText(_translate("MainWindow", "min S"))
         self.label_3.setText(_translate("MainWindow", "min V"))
