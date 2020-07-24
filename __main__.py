@@ -12,6 +12,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
+        self.setFixedSize(672, 645)
 
         self.sld_minH.valueChanged.connect(self.sld_min_h_handler)
         self.sld_minS.valueChanged.connect(self.sld_min_s_handler)
@@ -116,15 +117,5 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
-
     window.show()
-    # image_source = cv2.imread("c:/Users/evdok/Desktop/too_many_tomatoes_small.jpg")
-    #
-    # resized_image2 = window.resize_image_for_frame(image_source, window.lbl_image.width(), window.lbl_image.height())
-    # window.lbl_image.setPixmap(
-    #     QPixmap.fromImage(
-    #         QImage(resized_image2.data, resized_image2.shape[1], resized_image2.shape[0], resized_image2.strides[0],
-    #                QImage.Format_BGR888))
-    # )
-
     app.exec_()
