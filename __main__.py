@@ -7,7 +7,7 @@ from tomato_detector import color_filter, image_processor
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
-    source_image_bgr = []
+    source_image_bgr = None
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -32,7 +32,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             try:
                 self.open_image(file_name)
                 self.lbl_fileName.setText(file_name)
-            except IOError as e:
+            except (IOError, cv2.error) as e:
                 message_box = QtWidgets.QMessageBox()
                 message_box.setText(str(e))
                 message_box.setWindowTitle("IOError")
@@ -42,7 +42,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def open_image(self, file_name):
         opened_image = cv2.imread(file_name)
         if opened_image is None:
-            raise IOError("Ошибка при открытии изображения.")
+            raise IOError("Ошибка при открытии файла \"" + file_name + "\".")
         self.source_image_bgr = opened_image
         self.redraw_image()
 
@@ -77,7 +77,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.redraw_image()
 
     def redraw_image(self):
-        if len(self.source_image_bgr) != 0:
+        if self.source_image_bgr is not None:
             image = self.source_image_bgr
             if self.chbx_whiteBalance.isChecked():
                 image = image_processor.white_balance(image)
