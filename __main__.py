@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import Qt
 import main_window
 import sys
 import cv2
@@ -90,28 +91,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             image_mask = color_filter.find_tomatoes_by_color(image, color_range)
             new_image_bgr = cv2.bitwise_and(image, image, mask=image_mask)
 
-            resized_image_bgr = self.resize_image_for_frame(new_image_bgr, self.lbl_image.width(),
-                                                            self.lbl_image.height())
-            self.lbl_image.setPixmap(QPixmap.fromImage(
-                QImage(resized_image_bgr.data, resized_image_bgr.shape[1], resized_image_bgr.shape[0],
-                       resized_image_bgr.strides[0], QImage.Format_BGR888)))
+            pix_map = QPixmap.fromImage(
+                QImage(new_image_bgr.data, new_image_bgr.shape[1], new_image_bgr.shape[0], new_image_bgr.strides[0],
+                       QImage.Format_BGR888))
 
-    @staticmethod
-    def resize_image_for_frame(image, frame_width, frame_height):
-        image_width = image.shape[1]
-        image_height = image.shape[0]
-
-        if image_height > frame_height or image_width > frame_width:
-            width_diff = image_width / frame_width
-            height_diff = image_height / frame_height
-        else:
-            width_diff = frame_width / image_width
-            height_diff = frame_height / image_height
-
-        if width_diff > height_diff:
-            return cv2.resize(image, (round(image_width / width_diff), round(image_height / width_diff)))
-        else:
-            return cv2.resize(image, (round(image_width / height_diff), round(image_height / height_diff)))
+            self.lbl_image.setPixmap(
+                pix_map.scaled(self.lbl_image.width(), self.lbl_image.height(), Qt.KeepAspectRatio))
 
 
 if __name__ == "__main__":
